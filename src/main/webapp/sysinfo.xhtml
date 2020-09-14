@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Logiweb Tableau</title>
+    <h:outputStylesheet library="css" name="stats.css" />
+    <h:outputStylesheet library="css" name="head.css" />
+    <h:outputStylesheet library="css" name="list.css" />
+    <h:outputScript>
+        function onMessage(message) {
+            location.reload();
+        }
+    </h:outputScript>
+</h:head>
+<h:body>
+    <div id="header" class="one">
+        <h:graphicImage url="/resources/images/Title.png"/>
+    </div>
+
+    <div id="main" class="ui-g-12">
+        <div class="one"><h1>Drivers/Vehicles Statistics</h1></div>
+        <ul class="border">
+            <li>Drivers Available/Unavailable: #{myEJBApplication.systemInfoBean.availableDriversCount}/#{myEJBApplication.systemInfoBean.unavailableDriversCount}</li>
+            <li>Boats Available/Unavailable: #{myEJBApplication.systemInfoBean.availableBoatsCount}/#{myEJBApplication.systemInfoBean.unavailableBoatsCount}</li>
+            <li>Plains Available/Unavailable: #{myEJBApplication.systemInfoBean.availablePlainsCount}/#{myEJBApplication.systemInfoBean.unavailablePlainsCount}</li>
+            <li>Broken Plains/Boats: #{myEJBApplication.systemInfoBean.brokenPlainsCount}/#{myEJBApplication.systemInfoBean.brokenBoatsCount}</li>
+        </ul>
+        <div id="orders-table" class="one">
+            <div class="one"><h1>Latest Orders</h1></div>
+            <p:dataTable var="order" reflow="true" tableStyleClass="table table-hover" value="#{myEJBApplication.systemInfoBean.orderDtoList}">
+                <p:column headerText="Id">
+                    <h:outputText value="#{order.orderId}" />
+                </p:column>
+                <p:column headerText="From">
+                    <h:outputText value="#{order.startCity}" />
+                </p:column>
+                <p:column headerText="To">
+                    <h:outputText value="#{order.destinationCity}" />
+                </p:column>
+                <p:column headerText="Vehicle">
+                    <h:outputText value="#{order.vehicleName}" />
+                </p:column>
+                <p:column headerText="Cargo">
+                    <h:outputText value="#{order.cargoName}" />
+                </p:column>
+                <p:column headerText="Weight, kg">
+                    <h:outputText value="#{order.cargoWeight}" />
+                </p:column>
+            </p:dataTable>
+        </div>
+    </div>
+    <div id="footer" class="ui-g-12">
+        <h:outputText value="LogiWeb &copy; 2020" />
+    </div>
+
+    <f:websocket channel="websocket" onmessage="onMessage" />
+
+</h:body>
+</html>
